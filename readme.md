@@ -73,6 +73,35 @@ Azure AI Search can be integrated as a knowledge base to enable Retrieval Augmen
 
 The Azure AI Foundry Agent Service allows you to create AI agents with tools like Code Interpreter and AI Search. Below is a Python example to create an agent with both tools attached.
 
+## 4. Steps to use Azure AI Foundry Agent Service FAST API backend
+
+Step 1: 
+Run below script to activate the fastAPI (backend) 
+```bash
+python f_ag.py
+```
+
+Step 2: 
+```python
+run req.py to send a request to the fastAPI backend
+```
+
+## Recommendations: 
+For deployment, this can be hosted on azure container apps/Azure kubenetes service.
+
+## 5. Steps to use Agentic Workflow custom application, powered by Langgraph. 
+Step 1: 
+Update the parameters required to instantiate the LLM. 
+
+Step 2: 
+```python
+Run python app.py
+```
+
+## Recommendations: 
+To be deployed on Azure App Service. Please Refer to the documentation below. 
+
+
 ### Python Code to Create an Agent with Code Interpreter and AI Search
 
 ```python
@@ -366,3 +395,4 @@ with project_client:
 - [Azure AI Foundry Agent Service Overview](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/overview)
 - [Azure AI Search Documentation](https://learn.microsoft.com/en-us/azure/search/)
 - [GitHub: Azure AI Foundry Samples](https://github.com/Azure-Samples/get-started-with-ai-agents)
+- [Azure App Service Documentation Guide](https://learn.microsoft.com/en-us/azure/app-service/quickstart-python?tabs=fastapi%2Cwindows%2Cazure-cli%2Cazure-cli-deploy%2Cdeploy-instructions-azportal%2Cterminal-bash%2Cdeploy-instructions-zip-azcli)

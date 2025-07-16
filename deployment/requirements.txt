@@ -1,0 +1,5 @@
+chainlit==1.1.0
+langchain-openai==0.1.8
+langgraph==0.0.38
+pydantic==2.7.1
+typing-extensions==4.11.0

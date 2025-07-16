@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/da98fba6-14e3-4189-ba91-7ba57cd88c78/resourceGroups/AI-Hackathon-Demo/providers/Microsoft.Web/sites/chainlitdemoAIhack",
+    "appService.deploySubpath": "deployment"
+}

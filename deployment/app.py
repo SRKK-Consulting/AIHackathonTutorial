@@ -126,3 +126,7 @@ async def on_message(message: cl.Message):
     if state.get("messages") and len(state["messages"]) > 0:
         last_message = state["messages"][-1]
         await cl.Message(content=last_message.content).send()
+
+# if __name__ == "__main__":
+# 	# Chainlit will automatically run the application
+# 	pass

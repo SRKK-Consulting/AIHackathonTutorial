@@ -43,6 +43,94 @@ To use Azure AI Foundry Agent Service, you must deploy a compatible model (e.g.,
 
 **Note**: Check model availability and regional support in the [Azure AI Foundry Models documentation](https://learn.microsoft.com/en-us/azure/ai-foundry/models).
 
+# Azure AI Foundry Agent: Step-by-Step Guide
+
+This beginner-friendly tutorial walks you through using the Azure AI Foundry Agent Service to create powerful AI agents. You'll learn how to set up a model, connect Azure AI Search as a knowledge base, use the Code Interpreter, and implement advanced tools like Function Calling. This guide assumes you have an Azure subscription and basic familiarity with Python and Azure CLI.
+
+## Prerequisites
+
+Before starting, ensure you have the following:
+
+- **Azure Subscription**: Sign up for a free account at [azure.microsoft.com/free](https://azure.microsoft.com/free/) if you don’t have one.
+- **Azure CLI**: Install and configure it, then sign in with `az login`. [Learn more](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli).
+- **Azure AI Foundry Project**: Set up a project in the Azure AI Foundry portal at [ai.azure.com](https://ai.azure.com).
+- **Permissions**: You need Azure AI Account Owner, Contributor, or Cognitive Services Contributor role at the subscription level.
+- **Python Environment**: Use Python 3.8+ and install required libraries:
+  ```bash
+  pip install azure-ai-projects azure-identity
+  ```
+- **Environment Variables**: Set these in your terminal or `.env` file:
+  ```bash
+  export PROJECT_ENDPOINT="https://<your-ai-service>.services.ai.azure.com/api/projects/<your-project>"
+  export MODEL_DEPLOYMENT_NAME="gpt-4o"
+  export API_VERSION="2025-05-15-preview"
+  ```
+
+## 1. Provisioning a Model in Azure AI Foundry
+
+To use Azure AI Foundry Agent Service, you need to deploy a model like GPT-4o, Llama, or Mistral to your project.
+
+### Steps to Deploy a Model
+
+1. **Open the Azure AI Foundry Portal**:
+   - Visit [ai.azure.com](https://ai.azure.com) and sign in.
+   - Select your project or create a new one by clicking **+ Create project**.
+
+2. **Deploy a Model**:
+   - Go to **My assets** > **Models + endpoints** > **Deploy Model** > **Deploy Base Model**.
+   - Select a model (e.g., `gpt-4o`).
+   - Configure settings:
+     - **Deployment Type**: Choose **Global Standard**.
+     - **Model Version**: Pick the latest version (e.g., `2024-08-06`).
+     - **Tokens Per Minute Rate Limit**: Set to at least 140,000 for smooth performance.
+   - Click **Deploy** and wait for completion (this may take a few minutes).
+
+3. **Get the Project Endpoint**:
+   - In the project’s **Overview** page, find **Endpoints and keys** > **Libraries** > **Azure AI Foundry**.
+   - Copy the endpoint and set it as an environment variable:
+     ```bash
+     export PROJECT_ENDPOINT="https://<your-ai-service>.services.ai.azure.com/api/projects/<your-project>"
+     ```
+
+4. **Verify Deployment**:
+   - Note the model deployment name (e.g., `gpt-4o`) for use in agent creation.
+
+**Tip**: Check model availability and regional support in the [Azure AI Foundry Models documentation](https://learn.microsoft.com/en-us/azure/ai-foundry/models).
+
+## 1.5. Provision Blob Storage
+
+Azure Blob Storage is required to store files for tools like Code Interpreter or to upload documents for Azure AI Search.
+
+### Steps to Set Up Blob Storage
+
+1. **Create a Storage Account**:
+   - In the Azure portal, search for **Storage accounts** and click **+ Create**.
+   - Choose your subscription, resource group, and a unique storage account name.
+   - Select a region (preferably the same as your AI Foundry project) and a performance tier (e.g., Standard).
+   - Click **Review + create**, then **Create**.
+
+2. **Create a Blob Container**:
+   - Once the storage account is created, navigate to it in the Azure portal.
+   - Under **Data storage**, select **Containers** > **+ Container**.
+   - Name the container (e.g., `agent-files`) and set the access level to **Private**.
+   - Click **Create**.
+
+3. **Retrieve Connection Details (Good to know)**:
+   - In the storage account, go to **Access keys** and copy the **Connection string** or **Key**.
+   - Alternatively, use **Shared Access Signatures (SAS)** for secure access.
+   - Set the connection string as an environment variable:
+     ```bash
+     export AZURE_STORAGE_CONNECTION_STRING="DefaultEndpointsProtocol=https;AccountName=<your-account>;AccountKey=<your-key>;EndpointSuffix=core.windows.net"
+     ```
+
+4. **Link to Azure AI Foundry**:
+   - In the Azure AI Foundry portal, navigate to your project.
+   - Add Blob Storage as a tool:
+     - Go to **Agents** > **Setup** > **Add Tool** > **Azure Blob Storage**.
+     - Provide the storage account name, container name, and connection string or SAS token.
+
+**Tip**: Use Blob Storage to store input files for Code Interpreter or documents for AI Search indexing. Refer to the [Azure Blob Storage documentation](https://learn.microsoft.com/en-us/azure/storage/blobs/) for details.
+
 ## 2. Using AI Search as a Knowledge Base
 
 Azure AI Search can be integrated as a knowledge base to enable Retrieval Augmented Generation (RAG) for agents, allowing them to retrieve and utilize internal documents or data.
@@ -53,6 +141,7 @@ Azure AI Search can be integrated as a knowledge base to enable Retrieval Augmen
    - In the Azure portal, create a new Azure AI Search resource.
    - Configure the resource with a unique name and select a pricing tier (e.g., Basic or Standard).
    - Note the endpoint and API key.
+   - Note that you will need to have a blob storage account set up for this as well. 
 
 2. **Index Data**:
    - Upload documents or data to the Azure AI Search service.
